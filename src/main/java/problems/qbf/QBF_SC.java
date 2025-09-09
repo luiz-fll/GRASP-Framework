@@ -15,7 +15,10 @@ public class QBF_SC extends QBF_Inverse {
 
     @Override
     public Double evaluateInsertionCost(Integer elem, Solution<Integer> sol) {
-        if (coversUniverse(sol)) {
+        Solution<Integer> newSol = new Solution<>(sol);
+        newSol.add(elem);
+
+        if (coversUniverse(newSol)) {
             return super.evaluateInsertionCost(elem, sol);
         } else {
             return Double.NEGATIVE_INFINITY;
@@ -24,7 +27,10 @@ public class QBF_SC extends QBF_Inverse {
 
     @Override
     public Double evaluateRemovalCost(Integer elem, Solution<Integer> sol) {
-        if (coversUniverse(sol)) {
+        Solution<Integer> newSol = new Solution<>(sol);
+        newSol.remove(elem);
+
+        if (coversUniverse(newSol)) {
             return super.evaluateRemovalCost(elem, sol);
         } else {
             return Double.NEGATIVE_INFINITY;
@@ -33,7 +39,11 @@ public class QBF_SC extends QBF_Inverse {
 
     @Override
     public Double evaluateExchangeCost(Integer elemIn, Integer elemOut, Solution<Integer> sol) {
-        if (coversUniverse(sol)) {
+        Solution<Integer> newSol = new Solution<>(sol);
+        newSol.remove(elemOut);
+        newSol.add(elemIn);
+
+        if (coversUniverse(newSol)) {
             return super.evaluateExchangeCost(elemIn, elemOut, sol);
         } else {
             return Double.NEGATIVE_INFINITY;
