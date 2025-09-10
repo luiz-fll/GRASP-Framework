@@ -63,4 +63,16 @@ public class GRASP_QBF_SC_FIRST extends GRASP_QBF_SC {
 
         return sol;
     }
+
+    public static void main(String[] args) throws IOException {
+
+        long startTime = System.currentTimeMillis();
+        GRASP_QBF_SC grasp = new GRASP_QBF_SC_FIRST(0.05, 1000, "instances/qbfsc/qbfsc050");
+        Solution<Integer> bestSol = grasp.solve();
+        System.out.println("maxVal = " + bestSol);
+        long endTime   = System.currentTimeMillis();
+        long totalTime = endTime - startTime;
+        System.out.println("Time = "+(double)totalTime/(double)1000+" seg");
+
+    }
 }

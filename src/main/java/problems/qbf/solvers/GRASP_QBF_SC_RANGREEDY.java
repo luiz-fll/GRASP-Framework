@@ -7,8 +7,8 @@ import java.util.ArrayList;
 
 public class GRASP_QBF_SC_RANGREEDY extends GRASP_QBF_SC {
 
-    public GRASP_QBF_SC_RANGREEDY(Double alpha, Integer iterations, String filename) throws IOException {
-        super(alpha, iterations, filename);
+    public GRASP_QBF_SC_RANGREEDY(Integer randomMoves, Integer iterations, String filename) throws IOException {
+        super(randomMoves.doubleValue(), iterations, filename);
     }
 
     @Override
@@ -18,7 +18,7 @@ public class GRASP_QBF_SC_RANGREEDY extends GRASP_QBF_SC {
         sol = createEmptySol();
 
         // Define o número de movimentos aleatórios.
-        int randomMoves = 5;
+        int randomMoves = alpha.intValue();
 
         // Fase 1: Remoções aleatórias viáveis
         for (int i = 0; i < randomMoves; i++) {
@@ -52,7 +52,7 @@ public class GRASP_QBF_SC_RANGREEDY extends GRASP_QBF_SC {
             for (Integer candOut : sol) {
                 Double deltaCost = ObjFunction.evaluateRemovalCost(candOut, sol);
                 // Verifica se a remoção é viável e se melhora a solução.
-                if (deltaCost < minDeltaCost) {
+                if (deltaCost < minDeltaCost && deltaCost != Double.NEGATIVE_INFINITY) {
                     minDeltaCost = deltaCost;
                     bestCandOut = candOut;
                 }
@@ -68,5 +68,17 @@ public class GRASP_QBF_SC_RANGREEDY extends GRASP_QBF_SC {
         }
 
         return sol;
+    }
+
+    public static void main(String[] args) throws IOException {
+
+        long startTime = System.currentTimeMillis();
+        GRASP_QBF_SC grasp = new GRASP_QBF_SC_RANGREEDY(3, 1000, "instances/qbfsc/qbfsc025");
+        Solution<Integer> bestSol = grasp.solve();
+        System.out.println("maxVal = " + bestSol);
+        long endTime   = System.currentTimeMillis();
+        long totalTime = endTime - startTime;
+        System.out.println("Time = "+(double)totalTime/(double)1000+" seg");
+
     }
 }

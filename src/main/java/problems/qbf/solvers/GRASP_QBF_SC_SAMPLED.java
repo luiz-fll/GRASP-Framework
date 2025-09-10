@@ -6,9 +6,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class GRASP_QBF_SC_SAMPLED extends GRASP_QBF_SC {
+    public int sampleSize;
 
-    public GRASP_QBF_SC_SAMPLED(Double alpha, Integer iterations, String filename) throws IOException {
+    public GRASP_QBF_SC_SAMPLED(Double alpha, Integer sampleSize, Integer iterations, String filename) throws IOException {
         super(alpha, iterations, filename);
+        this.sampleSize = sampleSize;
     }
 
     @Override
@@ -16,9 +18,6 @@ public class GRASP_QBF_SC_SAMPLED extends GRASP_QBF_SC {
         CL = makeCL(); // A CL inicial ainda é a lista completa de candidatos
         RCL = makeRCL();
         sol = createEmptySol();
-
-        // Define o tamanho da amostra
-        int sampleSize = 5;
 
         while (true) {
             double maxCost = Double.NEGATIVE_INFINITY, minCost = Double.POSITIVE_INFINITY;
@@ -66,5 +65,17 @@ public class GRASP_QBF_SC_SAMPLED extends GRASP_QBF_SC {
         }
 
         return sol;
+    }
+
+    public static void main(String[] args) throws IOException {
+
+        long startTime = System.currentTimeMillis();
+        GRASP_QBF_SC grasp = new GRASP_QBF_SC_SAMPLED(0.05, 5, 1000, "instances/qbfsc/qbfsc025");
+        Solution<Integer> bestSol = grasp.solve();
+        System.out.println("maxVal = " + bestSol);
+        long endTime   = System.currentTimeMillis();
+        long totalTime = endTime - startTime;
+        System.out.println("Time = "+(double)totalTime/(double)1000+" seg");
+
     }
 }
