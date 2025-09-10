@@ -161,7 +161,7 @@ public class GRASP_QBF_SC extends AbstractGRASP<Integer> {
     public static void main(String[] args) throws IOException {
 
         long startTime = System.currentTimeMillis();
-        GRASP_QBF_SC grasp = new GRASP_QBF_SC(0.05, 1000, "instances/qbfsc/qbfsc050");
+        GRASP_QBF_SC grasp = new GRASP_QBF_SC(0.05, 1000, "instances/qbfsc/qbfsc025");
         Solution<Integer> bestSol = grasp.solve();
         System.out.println("maxVal = " + bestSol);
         long endTime   = System.currentTimeMillis();
