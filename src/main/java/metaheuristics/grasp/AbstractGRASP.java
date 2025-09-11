@@ -205,7 +205,7 @@ public abstract class AbstractGRASP<E> {
 		bestSol = createEmptySol();
 		int iteration = 0;
 
-		while (System.currentTimeMillis() - startTime < timeLimitMillis && iteration < iterations) {
+		while (System.currentTimeMillis() - startTime < timeLimitMillis) {
 			iteration++;
 			constructiveHeuristic();
 			localSearch();
