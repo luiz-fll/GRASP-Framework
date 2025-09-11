@@ -32,7 +32,7 @@ public class GRASP_QBF_SC_RANGREEDY extends GRASP_QBF_SC {
             }
 
             // Se não houver candidatos viáveis para remoção, a fase aleatória termina.
-            if (removalCandidates.isEmpty()) {
+            if (removalCandidates.isEmpty() || System.currentTimeMillis() - startTime >= timeLimitMillis) {
                 break;
             }
 
@@ -44,7 +44,7 @@ public class GRASP_QBF_SC_RANGREEDY extends GRASP_QBF_SC {
         }
 
         // Fase 2: Remoções gulosas (best-improving)
-        while (true) {
+        while (System.currentTimeMillis() - startTime < timeLimitMillis) {
             Double minDeltaCost = Double.POSITIVE_INFINITY;
             Integer bestCandOut = null;
 

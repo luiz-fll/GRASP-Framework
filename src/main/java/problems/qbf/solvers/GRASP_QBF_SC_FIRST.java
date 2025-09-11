@@ -14,7 +14,7 @@ public class GRASP_QBF_SC_FIRST extends GRASP_QBF_SC {
     public Solution<Integer> localSearch() {
         boolean improved = true;
 
-        while (improved) {
+        while (improved && System.currentTimeMillis() - startTime < timeLimitMillis) {
             improved = false;
 
             // Cria a lista de candidatos para inserção
@@ -67,7 +67,7 @@ public class GRASP_QBF_SC_FIRST extends GRASP_QBF_SC {
     public static void main(String[] args) throws IOException {
 
         long startTime = System.currentTimeMillis();
-        GRASP_QBF_SC grasp = new GRASP_QBF_SC_FIRST(0.05, 1000, "instances/qbfsc/qbfsc050");
+        GRASP_QBF_SC grasp = new GRASP_QBF_SC_FIRST(0.05, 1000, "instances/qbfsc/qbfsc025");
         Solution<Integer> bestSol = grasp.solve();
         System.out.println("maxVal = " + bestSol);
         long endTime   = System.currentTimeMillis();

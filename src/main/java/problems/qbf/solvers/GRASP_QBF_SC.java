@@ -58,7 +58,7 @@ public class GRASP_QBF_SC extends AbstractGRASP<Integer> {
         cost = Double.POSITIVE_INFINITY;
 
         /* Main loop, which repeats until the stopping criteria is reached. */
-        while (true) {
+        while (System.currentTimeMillis() - startTime < timeLimitMillis) {
 
             double maxCost = Double.NEGATIVE_INFINITY, minCost = Double.POSITIVE_INFINITY;
             cost = ObjFunction.evaluate(sol);
@@ -153,7 +153,7 @@ public class GRASP_QBF_SC extends AbstractGRASP<Integer> {
                 }
                 ObjFunction.evaluate(sol);
             }
-        } while (minDeltaCost < -Double.MIN_VALUE);
+        } while (minDeltaCost < -Double.MIN_VALUE && System.currentTimeMillis() - startTime < timeLimitMillis);
 
         return null;
     }

@@ -18,7 +18,8 @@ import solutions.Solution;
  *            Generic type of the element which composes the solution.
  */
 public abstract class AbstractGRASP<E> {
-
+	public long startTime;
+	public final long timeLimitMillis;
 	/**
 	 * flag that indicates whether the code should print more information on
 	 * screen
@@ -132,6 +133,7 @@ public abstract class AbstractGRASP<E> {
 		this.ObjFunction = objFunction;
 		this.alpha = alpha;
 		this.iterations = iterations;
+		this.timeLimitMillis = 30 * 60 * 1000;
 	}
 	
 	/**
@@ -199,15 +201,23 @@ public abstract class AbstractGRASP<E> {
 	 * @return The best feasible solution obtained throughout all iterations.
 	 */
 	public Solution<E> solve() {
-
+		startTime = System.currentTimeMillis();
 		bestSol = createEmptySol();
-		for (int i = 0; i < iterations; i++) {
+		int iteration = 0;
+
+		while (System.currentTimeMillis() - startTime < timeLimitMillis && iteration < iterations) {
+			iteration++;
 			constructiveHeuristic();
 			localSearch();
 			if (bestSol.cost > sol.cost) {
 				bestSol = new Solution<E>(sol);
 				if (verbose)
-					System.out.println("(Iter. " + i + ") BestSol = " + bestSol);
+					System.out.println("(Iter. " + iteration + ") BestSol = " + bestSol);
+			}
+
+			// Se atingir o tempo limite, saia do loop principal
+			if (System.currentTimeMillis() - startTime >= timeLimitMillis) {
+				break;
 			}
 		}
 
@@ -222,7 +232,7 @@ public abstract class AbstractGRASP<E> {
 	 * @return true if the criteria is met.
 	 */
 	public Boolean constructiveStopCriteria() {
-		return (cost > sol.cost) ? false : true;
+		return (cost > sol.cost && System.currentTimeMillis() - startTime >= timeLimitMillis) ? false : true;
 	}
 
 }

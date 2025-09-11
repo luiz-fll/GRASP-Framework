@@ -19,7 +19,7 @@ public class GRASP_QBF_SC_SAMPLED extends GRASP_QBF_SC {
         RCL = makeRCL();
         sol = createEmptySol();
 
-        while (true) {
+        while (System.currentTimeMillis() - startTime < timeLimitMillis) {
             double maxCost = Double.NEGATIVE_INFINITY, minCost = Double.POSITIVE_INFINITY;
 
             // Cria uma amostra aleatória da CL
