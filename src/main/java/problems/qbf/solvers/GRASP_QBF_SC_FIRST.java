@@ -23,6 +23,9 @@ public class GRASP_QBF_SC_FIRST extends GRASP_QBF_SC {
 
             // Avalia inserções (Primeira Melhoria)
             for (Integer candIn : candidatesToInsert) {
+                if (System.currentTimeMillis() - startTime > timeLimitMillis) {
+                    return sol;
+                }
                 double deltaCost = ObjFunction.evaluateInsertionCost(candIn, sol);
                 if (deltaCost < -Double.MIN_VALUE && deltaCost != Double.NEGATIVE_INFINITY) {
                     sol.add(candIn);
@@ -35,6 +38,9 @@ public class GRASP_QBF_SC_FIRST extends GRASP_QBF_SC {
 
             // Avalia remoções (Primeira Melhoria)
             for (Integer candOut : sol) {
+                if (System.currentTimeMillis() - startTime > timeLimitMillis) {
+                    return sol;
+                }
                 double deltaCost = ObjFunction.evaluateRemovalCost(candOut, sol);
                 if (deltaCost < -Double.MIN_VALUE && deltaCost != Double.NEGATIVE_INFINITY) {
                     sol.remove(candOut);
@@ -48,6 +54,9 @@ public class GRASP_QBF_SC_FIRST extends GRASP_QBF_SC {
             // Avalia trocas (Primeira Melhoria)
             for (Integer candIn : candidatesToInsert) {
                 for (Integer candOut : sol) {
+                    if (System.currentTimeMillis() - startTime > timeLimitMillis) {
+                        return sol;
+                    }
                     double deltaCost = ObjFunction.evaluateExchangeCost(candIn, candOut, sol);
                     if (deltaCost < -Double.MIN_VALUE && deltaCost != Double.NEGATIVE_INFINITY) {
                         sol.remove(candOut);
@@ -62,17 +71,5 @@ public class GRASP_QBF_SC_FIRST extends GRASP_QBF_SC {
         }
 
         return sol;
-    }
-
-    public static void main(String[] args) throws IOException {
-
-        long startTime = System.currentTimeMillis();
-        GRASP_QBF_SC grasp = new GRASP_QBF_SC_FIRST(0.05, 1000, "instances/qbfsc/qbfsc025");
-        Solution<Integer> bestSol = grasp.solve();
-        System.out.println("maxVal = " + bestSol);
-        long endTime   = System.currentTimeMillis();
-        long totalTime = endTime - startTime;
-        System.out.println("Time = "+(double)totalTime/(double)1000+" seg");
-
     }
 }

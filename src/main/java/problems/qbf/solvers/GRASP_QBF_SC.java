@@ -4,6 +4,7 @@ import metaheuristics.grasp.AbstractGRASP;
 import problems.qbf.QBF_SC;
 import solutions.Solution;
 
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -68,6 +69,9 @@ public class GRASP_QBF_SC extends AbstractGRASP<Integer> {
              * highest and lowest cost variation achieved by the candidates.
              */
             for (Integer c : CL) {
+                if (System.currentTimeMillis() - startTime > timeLimitMillis) {
+                    return sol;
+                }
                 Double deltaCost = ObjFunction.evaluateRemovalCost(c, sol);
                 if (deltaCost < minCost)
                     minCost = deltaCost;
@@ -80,6 +84,9 @@ public class GRASP_QBF_SC extends AbstractGRASP<Integer> {
              * performance using parameter alpha as threshold.
              */
             for (Integer c : CL) {
+                if (System.currentTimeMillis() - startTime > timeLimitMillis) {
+                    return sol;
+                }
                 Double deltaCost = ObjFunction.evaluateRemovalCost(c, sol);
                 if (deltaCost <= minCost + alpha * (maxCost - minCost)) {
                     RCL.add(c);
@@ -116,6 +123,9 @@ public class GRASP_QBF_SC extends AbstractGRASP<Integer> {
 
             // Evaluate insertions
             for (Integer candIn : candidatesToInsert) {
+                if (System.currentTimeMillis() - startTime > timeLimitMillis) {
+                    return sol;
+                }
                 double deltaCost = ObjFunction.evaluateInsertionCost(candIn, sol);
                 if (deltaCost < minDeltaCost && deltaCost != Double.NEGATIVE_INFINITY) {
                     minDeltaCost = deltaCost;
@@ -125,6 +135,9 @@ public class GRASP_QBF_SC extends AbstractGRASP<Integer> {
             }
             // Evaluate removals
             for (Integer candOut : sol) {
+                if (System.currentTimeMillis() - startTime > timeLimitMillis) {
+                    return sol;
+                }
                 double deltaCost = ObjFunction.evaluateRemovalCost(candOut, sol);
                 if (deltaCost < minDeltaCost && deltaCost != Double.NEGATIVE_INFINITY) {
                     minDeltaCost = deltaCost;
@@ -135,6 +148,9 @@ public class GRASP_QBF_SC extends AbstractGRASP<Integer> {
             // Evaluate exchanges
             for (Integer candIn : candidatesToInsert) {
                 for (Integer candOut : sol) {
+                    if (System.currentTimeMillis() - startTime > timeLimitMillis) {
+                        return sol;
+                    }
                     double deltaCost = ObjFunction.evaluateExchangeCost(candIn, candOut, sol);
                     if (deltaCost < minDeltaCost && deltaCost != Double.NEGATIVE_INFINITY) {
                         minDeltaCost = deltaCost;
@@ -156,17 +172,5 @@ public class GRASP_QBF_SC extends AbstractGRASP<Integer> {
         } while (minDeltaCost < -Double.MIN_VALUE && System.currentTimeMillis() - startTime < timeLimitMillis);
 
         return null;
-    }
-
-    public static void main(String[] args) throws IOException {
-
-        long startTime = System.currentTimeMillis();
-        GRASP_QBF_SC grasp = new GRASP_QBF_SC(0.05, 1000, "instances/qbfsc/qbfsc025");
-        Solution<Integer> bestSol = grasp.solve();
-        System.out.println("maxVal = " + bestSol);
-        long endTime   = System.currentTimeMillis();
-        long totalTime = endTime - startTime;
-        System.out.println("Time = "+(double)totalTime/(double)1000+" seg");
-
     }
 }

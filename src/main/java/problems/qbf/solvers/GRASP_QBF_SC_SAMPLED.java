@@ -36,6 +36,9 @@ public class GRASP_QBF_SC_SAMPLED extends GRASP_QBF_SC {
 
             // Explora a amostra e encontra os custos min/max
             for (Integer c : sampleCL) {
+                if (System.currentTimeMillis() - startTime > timeLimitMillis) {
+                    return sol;
+                }
                 Double deltaCost = ObjFunction.evaluateRemovalCost(c, sol);
                 if (deltaCost < minCost)
                     minCost = deltaCost;
@@ -45,6 +48,9 @@ public class GRASP_QBF_SC_SAMPLED extends GRASP_QBF_SC {
 
             // Preenche o RCL com base na amostra
             for (Integer c : sampleCL) {
+                if (System.currentTimeMillis() - startTime > timeLimitMillis) {
+                    return sol;
+                }
                 Double deltaCost = ObjFunction.evaluateRemovalCost(c, sol);
                 if (deltaCost <= minCost + alpha * (maxCost - minCost)) {
                     RCL.add(c);
@@ -65,17 +71,5 @@ public class GRASP_QBF_SC_SAMPLED extends GRASP_QBF_SC {
         }
 
         return sol;
-    }
-
-    public static void main(String[] args) throws IOException {
-
-        long startTime = System.currentTimeMillis();
-        GRASP_QBF_SC grasp = new GRASP_QBF_SC_SAMPLED(0.05, 5, 1000, "instances/qbfsc/qbfsc025");
-        Solution<Integer> bestSol = grasp.solve();
-        System.out.println("maxVal = " + bestSol);
-        long endTime   = System.currentTimeMillis();
-        long totalTime = endTime - startTime;
-        System.out.println("Time = "+(double)totalTime/(double)1000+" seg");
-
     }
 }

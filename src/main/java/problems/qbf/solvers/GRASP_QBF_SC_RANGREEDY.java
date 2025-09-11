@@ -25,6 +25,9 @@ public class GRASP_QBF_SC_RANGREEDY extends GRASP_QBF_SC {
             ArrayList<Integer> removalCandidates = new ArrayList<>();
             // Encontra todos os candidatos que podem ser removidos sem invalidar a solução.
             for (Integer cand : sol) {
+                if (System.currentTimeMillis() - startTime > timeLimitMillis) {
+                    return sol;
+                }
                 double deltaCost = ObjFunction.evaluateRemovalCost(cand, sol);
                 if (deltaCost != Double.NEGATIVE_INFINITY) {
                     removalCandidates.add(cand);
@@ -50,6 +53,9 @@ public class GRASP_QBF_SC_RANGREEDY extends GRASP_QBF_SC {
 
             // Encontra o melhor candidato para remoção
             for (Integer candOut : sol) {
+                if (System.currentTimeMillis() - startTime > timeLimitMillis) {
+                    return sol;
+                }
                 Double deltaCost = ObjFunction.evaluateRemovalCost(candOut, sol);
                 // Verifica se a remoção é viável e se melhora a solução.
                 if (deltaCost < minDeltaCost && deltaCost != Double.NEGATIVE_INFINITY) {
@@ -68,17 +74,5 @@ public class GRASP_QBF_SC_RANGREEDY extends GRASP_QBF_SC {
         }
 
         return sol;
-    }
-
-    public static void main(String[] args) throws IOException {
-
-        long startTime = System.currentTimeMillis();
-        GRASP_QBF_SC grasp = new GRASP_QBF_SC_RANGREEDY(3, 1000, "instances/qbfsc/qbfsc025");
-        Solution<Integer> bestSol = grasp.solve();
-        System.out.println("maxVal = " + bestSol);
-        long endTime   = System.currentTimeMillis();
-        long totalTime = endTime - startTime;
-        System.out.println("Time = "+(double)totalTime/(double)1000+" seg");
-
     }
 }
