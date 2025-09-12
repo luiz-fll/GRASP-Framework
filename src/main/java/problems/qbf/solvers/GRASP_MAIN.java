@@ -18,7 +18,7 @@ public class GRASP_MAIN {
 
         try (FileWriter escritor = new FileWriter(filename, true)) { // `true` para anexar ao arquivo
             // Converte a solução para uma string e escreve no arquivo
-            escritor.write("maxVal = " + bestSol.toString() + "\n");
+            escritor.write("maxVal = " + bestSol.toString() + "\nTime = "+(double)totalTime/(double)1000+" seg\n");
         } catch (IOException e) {
             System.err.println("Erro ao escrever no arquivo: " + e.getMessage());
         }

@@ -1,0 +1,2 @@
+maxVal = Solution: cost=[-155.0013916988344], size=[13], elements=[0, 3, 5, 7, 11, 12, 14, 15, 16, 18, 19, 2, 4]
+Time = 2.74 seg
